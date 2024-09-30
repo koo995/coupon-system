@@ -2,6 +2,7 @@ package test.api.service;
 
 import org.springframework.stereotype.Service;
 import test.api.domain.Coupon;
+import test.api.producer.CouponCreateProducer;
 import test.api.repository.CouponCountRepository;
 import test.api.repository.CouponRepository;
 
@@ -12,9 +13,12 @@ public class ApplyService {
 
     private final CouponCountRepository couponCountRepository;
 
-    public ApplyService(CouponRepository couponRepository, CouponCountRepository couponCountRepository) {
+    private final CouponCreateProducer couponCreateProducer;
+
+    public ApplyService(CouponRepository couponRepository, CouponCountRepository couponCountRepository, CouponCreateProducer couponCreateProducer) {
         this.couponRepository = couponRepository;
         this.couponCountRepository = couponCountRepository;
+        this.couponCreateProducer = couponCreateProducer;
     }
 
     /**
@@ -26,6 +30,6 @@ public class ApplyService {
             return;
         }
 
-        couponRepository.save(new Coupon(userId));
+        couponCreateProducer.create(userId);
     }
 }
